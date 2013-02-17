@@ -18,17 +18,29 @@ namespace DummyExtensions {
 			return Regex.Replace( str, @"([a-z])([A-Z]{1})", new MatchEvaluator( to_snake_case ), RegexOptions.None ).ToLower();
 		}
 
+
+		// TYPE CONVERTER
 		static readonly Dictionary<Type,TypeConverter> type_converters = new Dictionary<Type, TypeConverter>();
+
 		public static object covert_to( this string str, Type type){
-			if( str == null ) return null;
+			var type_converter = get_type_converter( type );
 			
-			if( type_converters.ContainsKey( type ) ) return type_converters[type].ConvertFromInvariantString( str );
+			if( type_converter.IsValid( str ) ) return type_converter.ConvertFromInvariantString( str );
+			
+			if( Nullable.GetUnderlyingType( type ) != null ) return null;
+
+			return  default( Type );
+		}
+
+		private static TypeConverter get_type_converter( Type type){
+			if( type_converters.ContainsKey( type ) ) return type_converters[type];
 			
 			var type_converter = TypeDescriptor.GetConverter( type );
 			type_converters.Add( type, type_converter );
 
-			return type_converter.ConvertFromInvariantString( str );
+			return type_converter;
 		}
+
 	}
 
 }
