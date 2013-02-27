@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using DummyExtensions.DSL;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DummyExtensions {

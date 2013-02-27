@@ -1,11 +1,12 @@
-﻿using MongoDB.Bson;
+﻿using DummyExtensions.DSL;
+using MongoDB.Bson;
 
 namespace DummyExtensions {
 
 	public static class bson_array_extensions {
 
-		public static BsonArrayGetFieldExtensionChain get_field(this BsonArray array, int field) {
-			return new BsonArrayGetFieldExtensionChain( array, field );
+		public static BsonArrayGetFieldExtensionDslChain get_field(this BsonArray array, int field) {
+			return new BsonArrayGetFieldExtensionDslChain( array, field );
 		}
 
 	}

@@ -1,13 +1,13 @@
 using System;
 using MongoDB.Bson;
 
-namespace DummyExtensions {
+namespace DummyExtensions.DSL {
 
-	public class BsonArrayGetFieldExtensionChain {
+	public class BsonArrayGetFieldExtensionDslChain {
 		private readonly BsonArray array;
 		private readonly int field;
 
-		public BsonArrayGetFieldExtensionChain(BsonArray array, int field) {
+		public BsonArrayGetFieldExtensionDslChain(BsonArray array, int field) {
 			this.array = array;
 			this.field = field;
 		}

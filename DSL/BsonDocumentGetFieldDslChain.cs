@@ -1,7 +1,7 @@
 using System;
 using MongoDB.Bson;
 
-namespace DummyExtensions {
+namespace DummyExtensions.DSL {
 
 	public class BsonDocumentGetFieldDslChain {
 		private readonly BsonDocument document;

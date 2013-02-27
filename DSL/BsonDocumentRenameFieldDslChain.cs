@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 
-namespace DummyExtensions {
+namespace DummyExtensions.DSL {
 
 	public class BsonDocumentRenameFieldDslChain {
 		private readonly string field_name;
