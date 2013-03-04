@@ -31,8 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DummyObjects">
-      <HintPath>packages\DummyObjects.1.0.4805.15123\lib\net40\DummyObjects.dll</HintPath>
+    <Reference Include="DummyObjects, Version=1.0.4810.41923, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\DummyObjects.1.0.4810.41923\lib\net40\DummyObjects.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>packages\mongocsharpdriver.1.7.1\lib\net35\MongoDB.Bson.dll</HintPath>
@@ -62,14 +63,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release NuGet.exe pack "$(ProjectPath)" -OutputDirectory "C:\Projects\Tools\Nuget\LocalFeed" -Properties Configuration=Release</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <Exec Command="Nuget.exe pack $(ProjectPath) -OutputDirectory C:\Projects\Tools\Nuget\LocalFeed -Properties Configuration=Release" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
