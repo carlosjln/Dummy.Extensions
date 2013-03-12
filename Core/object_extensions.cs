@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using DummyExtensions.Externals;
 using DummyObjects;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
@@ -107,16 +106,21 @@ namespace DummyExtensions {
 
 
 		// TYPE CONVERTER
+		// TODO: Consider using UniversalTypeConverter via Nuget
 		static readonly Dictionary<Type,TypeConverter> type_converters = new Dictionary<Type, TypeConverter>();
 
-		public static object covert_to( this string str, Type type){
+		public static object convert_to( this object obj, Type type ){
+			if( obj == null || obj.ToString().is_null_or_empty() ) {
+				return type.get_default_value();
+			}
+
 			var type_converter = get_type_converter( type );
 			
-			if( type_converter.IsValid( str ) ) return type_converter.ConvertFromInvariantString( str );
+			if( type_converter != null && type_converter.IsValid(obj) ) {
+				return type_converter.ConvertFrom( obj );
+			}
 			
-			if( Nullable.GetUnderlyingType( type ) != null ) return null;
-
-			return  default( Type );
+			throw new Exception( "Can not convert from '{0}' to '{1}'".format(obj.GetType().ToString( ), type.ToString( )) );
 		}
 
 		static TypeConverter get_type_converter( Type type){

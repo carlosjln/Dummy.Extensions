@@ -5,15 +5,11 @@
 		<version>$version$</version>
 		
 		<title>DummyExtensions</title>
-		<description>Some helpful extensions :)</description>
+		<description>Some useful extensions :)</description>
 		<projectUrl>https://github.com/carlosjln/DummyExtensions</projectUrl>
 		
 		<authors>Carlos J. López</authors>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<copyright>Copyright © 2013</copyright>
 	</metadata>
-	<files>
-        <file src="bin\Release\DummyExtensions.pdb" target="lib\net40" />
-		<file src="**\*.cs" target="src" exclude="**\AssemblyInfo.cs" />
-	</files>
 </package>

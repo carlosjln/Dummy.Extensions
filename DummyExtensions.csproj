@@ -11,7 +11,6 @@
     <RootNamespace>DummyExtensions</RootNamespace>
     <AssemblyName>DummyExtensions</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,17 +22,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DummyObjects, Version=1.0.4810.41923, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DummyObjects, Version=1.0.4818.39913, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\DummyObjects.1.0.4810.41923\lib\net40\DummyObjects.dll</HintPath>
+      <HintPath>packages\DummyObjects.1.0.4818.39913\lib\net40\DummyObjects.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>packages\mongocsharpdriver.1.7.1\lib\net35\MongoDB.Bson.dll</HintPath>
@@ -48,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Core\BsonSettings.cs" />
     <Compile Include="Core\bson_document_extensions.cs" />
+    <Compile Include="Core\ienumerable_extensions.cs" />
+    <Compile Include="Core\type_extensions.cs" />
     <Compile Include="DSL\BsonArrayGetFieldExtensionDslChain.cs" />
     <Compile Include="DSL\BsonDocumentGetFieldDslChain.cs" />
     <Compile Include="DSL\BsonDocumentRenameFieldDslChain.cs" />
@@ -63,10 +66,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- RELEASE TO NUGET LOCAL FEED -->
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
-    <Exec Command="Nuget.exe pack $(ProjectPath) -OutputDirectory C:\Projects\Tools\Nuget\LocalFeed -Properties Configuration=Release" />
+    <Exec Command="Nuget.exe pack $(ProjectPath) -OutputDirectory C:\Projects\Tools\Nuget\LocalFeed -Symbols -Properties Configuration=Release" />
   </Target>
 </Project>
