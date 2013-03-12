@@ -32,9 +32,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DummyObjects, Version=1.0.4818.39913, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DummyObjects, Version=1.0.4819.32308, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\DummyObjects.1.0.4818.39913\lib\net40\DummyObjects.dll</HintPath>
+      <HintPath>packages\DummyObjects.1.0.4819.32308\lib\net40\DummyObjects.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>packages\mongocsharpdriver.1.7.1\lib\net35\MongoDB.Bson.dll</HintPath>
