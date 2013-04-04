@@ -5,12 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C530E1F1-65B7-4C20-8786-276E70EE74B2}</ProjectGuid>
+    <ProjectGuid>{D925FEFC-47DD-4D8E-9B32-AE332B410961}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DummyExtensions</RootNamespace>
-    <AssemblyName>DummyExtensions</AssemblyName>
+    <RootNamespace>DummyExtensions.MongoDB</RootNamespace>
+    <AssemblyName>DummyExtensions.MongoDB</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,55 +23,61 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DummyObjects, Version=1.0.4819.32308, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\DummyObjects.1.0.4819.32308\lib\net40\DummyObjects.dll</HintPath>
+    <Reference Include="DummyExtensions">
+      <HintPath>..\packages\DummyExtensions.1.0.4841.21455\lib\net40\DummyExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DummyObjects">
+      <HintPath>..\packages\DummyObjects.1.0.4819.32308\lib\net40\DummyObjects.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
-      <HintPath>packages\mongocsharpdriver.1.7.1\lib\net35\MongoDB.Bson.dll</HintPath>
+      <HintPath>..\packages\mongocsharpdriver.1.8.0\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver">
-      <HintPath>packages\mongocsharpdriver.1.7.1\lib\net35\MongoDB.Driver.dll</HintPath>
+      <HintPath>..\packages\mongocsharpdriver.1.8.0\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BsonSettings.cs" />
-    <Compile Include="Core\bson_document_extensions.cs" />
-    <Compile Include="Core\ienumerable_extensions.cs" />
-    <Compile Include="Core\type_extensions.cs" />
+    <Compile Include="BsonSettings.cs" />
+    <Compile Include="bson_array_extensions.cs" />
+    <Compile Include="bson_document_extensions.cs" />
     <Compile Include="DSL\BsonArrayGetFieldExtensionDslChain.cs" />
     <Compile Include="DSL\BsonDocumentGetFieldDslChain.cs" />
     <Compile Include="DSL\BsonDocumentRenameFieldDslChain.cs" />
-    <Compile Include="Core\bson_array_extensions.cs" />
     <Compile Include="Externals\JsonWriter.cs" />
     <Compile Include="Externals\JsonWriterContext.cs" />
-    <Compile Include="Core\mongo_cursor_extensions.cs" />
-    <Compile Include="Core\object_extensions.cs" />
+    <Compile Include="ienumerable_extensions.cs" />
+    <Compile Include="mongo_cursor_extensions.cs" />
+    <Compile Include="object_extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\string_extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- UPDATE PROJECT DEPENDENCIES -->
+  <Target Name="BeforeBuild">
+    <Exec Command="Nuget.exe Update packages.config" />
+  </Target>
   <!-- RELEASE TO NUGET LOCAL FEED -->
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
-    </GetAssemblyIdentity>
-    <Exec Command="Nuget.exe pack $(ProjectPath) -OutputDirectory C:\Projects\Tools\Nuget\LocalFeed -Symbols -Properties Configuration=Release" />
+    <!-- MOVE PREVIOUS VERSIONS FROM FEED DIRECTORY -->
+    <Exec Command="C:\Projects\Tools\Nuget\GarbageCollector.exe $(ProjectName)" />
+    <!-- PACK NEW VERSION -->
+    <Exec Command="Nuget.exe pack $(ProjectPath) -OutputDirectory C:\Projects\Tools\Nuget\feed -Symbols -Properties Configuration=Release" />
   </Target>
 </Project>

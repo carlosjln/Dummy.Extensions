@@ -17,10 +17,11 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+using DummyExtensions.Externals;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 
-namespace DummyExtensions.Externals
+namespace DummyExtensions.MongoDB.Externals
 {
     /// <summary>
     /// Represents a BSON writer to a TextWriter (in JSON format).
@@ -81,13 +82,8 @@ namespace DummyExtensions.Externals
         /// <summary>
         /// Writes BSON binary data to the writer.
         /// </summary>
-        /// <param name="bytes">The binary data.</param>
-        /// <param name="subType">The binary data subtype.</param>
-        /// <param name="guidRepresentation">The representation for Guids.</param>
-        public override void WriteBinaryData(
-            byte[] bytes,
-            BsonBinarySubType subType,
-            GuidRepresentation guidRepresentation)
+        /// <param name="binaryData">The binary data.</param>
+        public override void WriteBinaryData(BsonBinaryData binaryData)
         {
             if (Disposed) { throw new ObjectDisposedException("JsonWriter"); }
             if (State != BsonWriterState.Value && State != BsonWriterState.Initial)
@@ -95,6 +91,9 @@ namespace DummyExtensions.Externals
                 ThrowInvalidState("WriteBinaryData", BsonWriterState.Value, BsonWriterState.Initial);
             }
 
+            var subType = binaryData.SubType;
+            var bytes = binaryData.Bytes;
+            var guidRepresentation = binaryData.GuidRepresentation;
             if (_jsonWriterSettings.OutputMode == JsonOutputMode.Shell)
             {
                 WriteNameHelper(Name);
@@ -193,6 +192,15 @@ namespace DummyExtensions.Externals
             _textWriter.Write(value ? "true" : "false");
 
             State = GetNextState();
+        }
+
+        /// <summary>
+        /// Writes BSON binary data to the writer.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        public override void WriteBytes(byte[] bytes)
+        {
+            WriteBinaryData(new BsonBinaryData(bytes, BsonBinarySubType.Binary));
         }
 
         /// <summary>
@@ -494,11 +502,8 @@ namespace DummyExtensions.Externals
         /// <summary>
         /// Writes a BSON ObjectId to the writer.
         /// </summary>
-        /// <param name="timestamp">The timestamp.</param>
-        /// <param name="machine">The machine hash.</param>
-        /// <param name="pid">The PID.</param>
-        /// <param name="increment">The increment.</param>
-        public override void WriteObjectId(int timestamp, int machine, short pid, int increment)
+        /// <param name="objectId">The ObjectId.</param>
+        public override void WriteObjectId(ObjectId objectId)
         {
             if (Disposed) { throw new ObjectDisposedException("JsonWriter"); }
             if (State != BsonWriterState.Value && State != BsonWriterState.Initial)
@@ -506,7 +511,7 @@ namespace DummyExtensions.Externals
                 ThrowInvalidState("WriteObjectId", BsonWriterState.Value, BsonWriterState.Initial);
             }
 
-            var bytes = ObjectId.Pack(timestamp, machine, pid, increment);
+            var bytes = ObjectId.Pack(objectId.Timestamp, objectId.Machine, objectId.Pid, objectId.Increment);
             switch (_jsonWriterSettings.OutputMode)
             {
                 case JsonOutputMode.Strict:
@@ -528,9 +533,8 @@ namespace DummyExtensions.Externals
         /// <summary>
         /// Writes a BSON regular expression to the writer.
         /// </summary>
-        /// <param name="pattern">A regular expression pattern.</param>
-        /// <param name="options">A regular expression options.</param>
-        public override void WriteRegularExpression(string pattern, string options)
+        /// <param name="regex">A BsonRegularExpression.</param>
+        public override void WriteRegularExpression(BsonRegularExpression regex)
         {
             if (Disposed) { throw new ObjectDisposedException("JsonWriter"); }
             if (State != BsonWriterState.Value && State != BsonWriterState.Initial)
@@ -538,6 +542,8 @@ namespace DummyExtensions.Externals
                 ThrowInvalidState("WriteRegularExpression", BsonWriterState.Value, BsonWriterState.Initial);
             }
 
+            var pattern = regex.Pattern;
+            var options = regex.Options;
             switch (_jsonWriterSettings.OutputMode)
             {
                 case JsonOutputMode.Strict:
@@ -688,6 +694,7 @@ namespace DummyExtensions.Externals
                 Close();
                 _textWriter.Dispose();
             }
+            base.Dispose(disposing);
         }
 
         // private methods
@@ -730,7 +737,7 @@ namespace DummyExtensions.Externals
                         _textWriter.Write(" ");
                     }
 
-					var normalize_id = bson_settings.NormalizeId;
+                    var normalize_id = bson_settings.NormalizeId;
 
                     WriteStringHelper( (name == "_id" && normalize_id ? "id" : name) );
 

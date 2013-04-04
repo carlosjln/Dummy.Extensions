@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace DummyExtensions {
+namespace DummyExtensions.MongoDB {
 
 	public static class bson_document_extensions {
 		// FIELD GETTERS

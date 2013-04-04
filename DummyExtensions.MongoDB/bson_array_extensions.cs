@@ -1,7 +1,7 @@
 ﻿using DummyExtensions.DSL;
 using MongoDB.Bson;
 
-namespace DummyExtensions {
+namespace DummyExtensions.MongoDB {
 
 	public static class bson_array_extensions {
 

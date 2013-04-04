@@ -47,7 +47,7 @@ namespace DummyExtensions.DSL {
 		public DateTimeOffset as_datetime_offset(DateTimeOffset default_value = default(DateTimeOffset)) {
 			var value = get_value();
 
-			return value != null ? value.AsDateTime : default_value;
+			return value != null ? value.ToUniversalTime() : default_value;
 		}
 
 		public BsonDocument as_bson_document(BsonDocument default_value = null) {

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using MongoDB.Bson;
 
-namespace DummyExtensions {
+namespace DummyExtensions.MongoDB {
 	
 	public static class ienumerable_extensions {
 		public static BsonDocument to_bson_array( this IEnumerable obj, string name ) {

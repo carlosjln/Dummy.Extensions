@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0"?>
 <package>
   <metadata>
-		<id>DummyExtensions</id>
+		<id>DummyExtensions.MongoDB</id>
 		<version>$version$</version>
 		
-		<title>DummyExtensions</title>
-		<description>Some useful extensions :)</description>
-		<projectUrl>https://github.com/carlosjln/DummyExtensions</projectUrl>
+		<title>DummyExtensions.MongoDB</title>
+		<description>MongoDB extensions for fun coding :)</description>
+		<projectUrl>https://github.com/carlosjln/DummyExtensions.MongoDB</projectUrl>
 		
 		<authors>Carlos J. López</authors>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>

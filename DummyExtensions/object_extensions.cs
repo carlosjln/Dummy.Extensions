@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using DummyObjects;
-using MongoDB.Bson;
-using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization;
-using JsonWriter = DummyExtensions.Externals.JsonWriter;
 
 namespace DummyExtensions {
 
@@ -50,54 +45,6 @@ namespace DummyExtensions {
 		public static Type get_interface( this Type self, Type interface_type ) {
 			return self.GetInterface( interface_type.Name );
 		}
-
-
-		// BSON
-		public static BsonDocument to_bson_document( this object self, BsonSettings bson_settings ) {
-			var document = self.ToBsonDocument();
-			
-			if( bson_settings.IgnoreDiscriminator ) document.Remove( "_t" );
-
-			if( bson_settings.NormalizeId && document.Contains( "_id" ) ) {
-				string id = null;
-				var document_id = document["_id"];
-				document.Remove( "_id" );
-
-				// This is critical
-				if( document_id != null ) {
-					if( document_id.IsBsonBinaryData ) {
-						id = document_id.AsBsonBinaryData.RawValue.ToString( );
-					} else if( document_id.IsString ) {
-						id = document_id.AsString;
-					}
-				}
-
-				if( id != null ) document.InsertAt( 0, new BsonElement( "id", id ) );
-			}
-
-			return document;
-		}
-		
-		public static BsonDocument to_bson_document( this object self) {
-			return to_bson_document(self, BsonSettings.Defaults );
-		}
-
-		
-		// JSON
-		public static string to_json( this object obj ) {
-			return to_json(obj, JsonWriterSettings.Defaults, BsonSettings.Defaults );
-		}
-
-		public static string to_json( this object obj, JsonWriterSettings json_writer_settings, BsonSettings bson_settings ) {
-			using ( var string_writer = new StringWriter() ){
-				using ( var bson_writer = new JsonWriter(string_writer, json_writer_settings, bson_settings) ) {
-					BsonSerializer.Serialize(bson_writer, obj);
-				}
-				
-				return string_writer.ToString();
-			}
-		}
-
 
 		// HTML
 		public static HtmlBuilder to_html( this object obj ) {
