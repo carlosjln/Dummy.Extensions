@@ -23,7 +23,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DummyObjects, Version=1.0.4819.32308, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\DummyObjects.1.0.4819.32308\lib\net40\DummyObjects.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -45,9 +41,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="string_extensions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- UPDATE PROJECT DEPENDENCIES -->
   <Target Name="BeforeBuild">
@@ -55,9 +48,6 @@
   </Target>
   <!-- RELEASE TO NUGET LOCAL FEED -->
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
-    <!-- MOVE PREVIOUS VERSIONS FROM FEED DIRECTORY -->
-    <Exec Command="C:\Projects\Tools\Nuget\GarbageCollector.exe $(ProjectName)" />
-    <!-- PACK NEW VERSION -->
-    <Exec Command="Nuget.exe pack $(ProjectPath) -OutputDirectory C:\Projects\Tools\Nuget\feed -Symbols -Properties Configuration=Release" />
+    <Exec Command="NugetPacker.exe $(ProjectName) 0 $(ProjectDir)" />
   </Target>
 </Project>

@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using DummyObjects;
 
 namespace DummyExtensions {
 
@@ -74,16 +73,6 @@ namespace DummyExtensions {
 
 		public static string decode_from_base64( this string str ) {
 			return str.is_null_or_empty() ? null : Encoding.UTF8.GetString( System.Convert.FromBase64String( str ) );
-		}
-
-
-		// AES ENCODING
-		public static string encode_to_aes( this string str, string key ) {
-			return AESEncryption.Encrypt( str, key );
-		}
-
-		public static string decode_from_aes( this string str, string key ) {
-			return AESEncryption.Decrypt( str, key );
 		}
 
 		

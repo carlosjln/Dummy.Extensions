@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using DummyObjects;
 
 namespace DummyExtensions {
 
@@ -45,13 +44,7 @@ namespace DummyExtensions {
 		public static Type get_interface( this Type self, Type interface_type ) {
 			return self.GetInterface( interface_type.Name );
 		}
-
-		// HTML
-		public static HtmlBuilder to_html( this object obj ) {
-			return new HtmlBuilder( obj );
-		}
-
-
+		
 		// TYPE CONVERTER
 		// TODO: Consider using UniversalTypeConverter via Nuget
 		static readonly Dictionary<Type,TypeConverter> type_converters = new Dictionary<Type, TypeConverter>();
