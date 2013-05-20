@@ -36,6 +36,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ienumerable_extensions.cs" />
     <Compile Include="type_extensions.cs" />
     <Compile Include="object_extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

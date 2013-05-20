@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -35,6 +36,40 @@ namespace DummyExtensions {
 			return Regex.IsMatch( str, regex, options );
 		}
 		
+		// E-mail validator
+		public static bool is_valid_email( this string str ) {
+			if( String.IsNullOrEmpty( str ) ) return false;
+
+			str = str.Trim();
+
+			if( str.Length > 254 ) return false;
+
+			// Use IdnMapping class to convert Unicode domain names.
+			try {
+				str = Regex.Replace( str, @"(@)(.+)$", DomainMapper, RegexOptions.None );
+			} catch( Exception ) {
+				return false;
+			}
+			
+			// Return true if strIn is in valid e-mail format. 
+			try {
+				const string pattern = @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$";
+				return Regex.IsMatch( str, pattern, RegexOptions.IgnoreCase );
+			} catch( Exception ) {
+				return false;
+			}
+		}
+
+		static string DomainMapper( Match match ) {
+			// IdnMapping class with default property values.
+			var idn = new IdnMapping( );
+			var domain_name = match.Groups[ 2 ].Value;
+
+			domain_name = idn.GetAscii( domain_name );
+
+			return match.Groups[ 1 ].Value + domain_name;
+		}
+
 
 		// MODIFIERS
 		public static void print( this string str ) {
