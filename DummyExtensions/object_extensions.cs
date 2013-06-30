@@ -31,6 +31,14 @@ namespace DummyExtensions {
 			return false;
 		}
 
+		public static bool inherits_from( this Type reference_type, IEnumerable<Type> types ) {
+			foreach( var type in types ) {
+				if( reference_type == type ) return true;
+			}
+
+			return false;
+		}
+
 		public static bool implements( this object self, Type interface_type ) {
 			return implements( self.GetType(), interface_type );
 		}
@@ -46,8 +54,11 @@ namespace DummyExtensions {
 		}
 		
 		// TYPE CONVERTER
-		// TODO: Consider using UniversalTypeConverter via Nuget
 		static readonly Dictionary<Type,TypeConverter> type_converters = new Dictionary<Type, TypeConverter>();
+
+		public static void RegisterTypeConverter( Type type, TypeConverter converter ) {
+			type_converters.Add( type, converter );
+		}
 
 		public static object convert_to( this object obj, Type type ){
 			if( obj == null || obj.ToString().is_null_or_empty() ) {
@@ -63,7 +74,7 @@ namespace DummyExtensions {
 			throw new Exception( "Can not convert from '{0}' to '{1}'".format(obj.GetType().ToString( ), type.ToString( )) );
 		}
 
-		static TypeConverter get_type_converter( Type type){
+		static TypeConverter get_type_converter( Type type ){
 			if( type_converters.ContainsKey( type ) ) return type_converters[type];
 			
 			var type_converter = TypeDescriptor.GetConverter( type );
