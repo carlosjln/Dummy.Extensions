@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DummyExtensions {
+namespace Dummy.Extensions {
 
 	public static class ienumerable_extensions {
 		public static List<T> to_list< T >( this IEnumerable<T> enumerable ) {

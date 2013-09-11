@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace DummyExtensions {
+namespace Dummy.Extensions {
 
 	public static class object_extensions {
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace DummyExtensions {
+namespace Dummy.Extensions {
 
 	public static class string_extensions {
 		// BOOLEANS
@@ -159,10 +159,10 @@ namespace DummyExtensions {
 			Func<Match, string> to_snake_case = ( Match match ) => {
 				var a = match.Groups[1];
 				var b = match.Groups[2];
-
+				
 				return a + "_" + b;
 			};
-
+			
 			return Regex.Replace( str, @"([a-z])([A-Z]{1})", new MatchEvaluator( to_snake_case ), RegexOptions.None ).ToLower();
 		}
 		

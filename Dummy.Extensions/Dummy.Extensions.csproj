@@ -5,13 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D925FEFC-47DD-4D8E-9B32-AE332B410961}</ProjectGuid>
+    <ProjectGuid>{C530E1F1-65B7-4C20-8786-276E70EE74B2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DummyExtensions.MongoDB</RootNamespace>
-    <AssemblyName>DummyExtensions.MongoDB</AssemblyName>
+    <RootNamespace>Dummy.Extensions</RootNamespace>
+    <AssemblyName>Dummy.Extensions</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,56 +22,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DummyExtensions, Version=1.0.4888.21164, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DummyExtensions.1.0.4888.21164\lib\net40\DummyExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\packages\mongocsharpdriver.1.8.1\lib\net35\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\packages\mongocsharpdriver.1.8.1\lib\net35\MongoDB.Driver.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BsonSettings.cs" />
-    <Compile Include="bson_array_extensions.cs" />
-    <Compile Include="bson_document_extensions.cs" />
-    <Compile Include="DSL\BsonArrayGetFieldExtensionDslChain.cs" />
-    <Compile Include="DSL\BsonDocumentGetFieldDslChain.cs" />
-    <Compile Include="DSL\BsonDocumentRenameFieldDslChain.cs" />
-    <Compile Include="Externals\JsonWriter.cs" />
-    <Compile Include="Externals\JsonWriterContext.cs" />
     <Compile Include="ienumerable_extensions.cs" />
-    <Compile Include="mongo_cursor_extensions.cs" />
+    <Compile Include="type_extensions.cs" />
     <Compile Include="object_extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="string_extensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- UPDATE PROJECT DEPENDENCIES -->
+  <!-- UPDATE PROJECT DEPENDENCIES
   <Target Name="BeforeBuild">
     <Exec Command="Nuget.exe Update packages.config" />
   </Target>
-  <!-- RELEASE TO NUGET LOCAL FEED -->
+  -->
+  <!-- RELEASE TO NUGET LOCAL FEED
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
     <Exec Command="NugetPacker.exe $(ProjectName) 0 $(ProjectDir)" />
   </Target>
+  -->
 </Project>
