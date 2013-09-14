@@ -43,14 +43,12 @@
     <Compile Include="string_extensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- UPDATE PROJECT DEPENDENCIES
-  <Target Name="BeforeBuild">
-    <Exec Command="Nuget.exe Update packages.config" />
-  </Target>
-  -->
-  <!-- RELEASE TO NUGET LOCAL FEED
-  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
-    <Exec Command="NugetPacker.exe $(ProjectName) 0 $(ProjectDir)" />
-  </Target>
-  -->
+	<!-- RELEASE TO NUGET LOCAL FEED -->
+	<Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+		<GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+			<Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+		</GetAssemblyIdentity>
+		
+		<Exec Command="NugetPacker.exe $(ProjectName) $(ProjectDir) %(AssemblyVersion.Version)" />
+	</Target>
 </Project>
