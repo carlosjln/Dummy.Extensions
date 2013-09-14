@@ -1,8 +1,14 @@
 @echo off
-call git add -A
+rem Scripted by: Carlos J. López 
+rem https://github.com/carlosjln/
+rem https://twitter.com/carlosjln
 
+echo.
 echo What did you do?
 set /p msg=I 
+
+echo.
+call git add -A
 
 echo.
 call git commit --verbose -m "%msg%"
